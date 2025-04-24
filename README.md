@@ -32,7 +32,7 @@ El objetivo principal de este proyecto fue:
 
 ## 👨‍💻 Autores
 
-Desarrollado por [Isabella Tulcán, María Eulalia Moncayo, Daniela Salazar] como parte de [Organización de Computadores, proyecto final].
+Desarrollado por Isabella Tulcán, María Eulalia Moncayo, Daniela Salazar como parte del curso Organización de Computadores, proyecto final.
 
 ## 📄 Licencia
 
