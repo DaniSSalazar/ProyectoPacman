@@ -1,0 +1,1254 @@
+Jump Inicio
+Index, hex 5
+Start, hex 5
+CopiaNum, dec 100
+Array, dec 100
+DEC 3
+DEC 3  
+DEC 4  
+DEC 2  
+DEC 3  
+DEC 3
+DEC 3  
+DEC 4  
+DEC 4  
+DEC 2  
+DEC 3  
+DEC 3  
+DEC 4  
+DEC 4  
+DEC 2  
+DEC 2  
+DEC 2  
+DEC 4  
+DEC 4  
+DEC 2  
+DEC 2  
+DEC 1  
+DEC 4  
+DEC 4  
+DEC 2  
+DEC 2  
+DEC 1  
+DEC 3  
+DEC 4  
+DEC 3  
+DEC 3  
+DEC 4  
+DEC 1  
+DEC 3  
+DEC 3  
+DEC 1  
+DEC 1  
+DEC 3  
+DEC 3  
+DEC 3  
+DEC 1  
+DEC 4  
+DEC 3  
+DEC 2  
+DEC 2  
+DEC 4  
+DEC 4  
+DEC 3  
+DEC 4  
+DEC 2  
+DEC 4  
+DEC 1  
+DEC 3  
+DEC 1  
+DEC 4  
+DEC 1  
+DEC 4  
+DEC 1  
+DEC 2  
+DEC 2  
+DEC 2  
+DEC 1  
+DEC 2  
+DEC 3  
+DEC 2  
+DEC 2  
+DEC 2  
+DEC 3  
+DEC 4  
+DEC 3  
+DEC 2  
+DEC 3  
+DEC 4  
+DEC 1  
+DEC 2  
+DEC 2  
+DEC 3  
+DEC 1  
+DEC 2  
+DEC 3  
+DEC 2  
+DEC 3  
+DEC 3  
+DEC 3  
+DEC 4  
+DEC 2  
+DEC 2  
+DEC 3  
+DEC 4  
+DEC 1  
+DEC 2  
+DEC 3  
+DEC 4  
+DEC 1  
+DEC 2  
+DEC 3  
+DEC 4  
+DEC 1  
+DEC 2  
+DEC 3  
+DEC 4  
+DEC 1  
+DEC 2  
+DEC 3  
+DEC 4  
+DEC 1  
+DEC 2  
+DEC 3    
+
+Inicio, 
+
+//Empieza logica
+Load pac-manRow
+store pac-manRowOriginal
+Load pac-manColumn
+store pac-manColumnOriginal
+
+	//hacer con todos los personajes
+jump iniciarPrograma
+
+actContFilas, hex 0
+	load pac-manRow
+	skipcond 400 /si es cero, ya no es la primera iteracion.
+	jump here
+	load pac-manRowAux
+	store contFilas
+	jumpi actContFilas
+	here, load pac-manRow
+		store contFilas
+		jumpi actContFilas
+
+CalcularPosPacman, hex 0
+	Load OFFSET
+	ADD pac-manColumn
+	Store PosPacman
+	jns actContFilas
+	SumarFilas, Load PosPacman
+		Add DIECISEIS
+		Store PosPacman
+		Load contFilas
+		Subt ONE
+		Store contFilas
+		SkipCond 400
+		Jump SumarFilas
+		load contPacman
+		skipcond 400
+		jump endd
+		guardaPosIn, Load PosPacman
+		Store PosInicialPacman
+		load ONE
+		store contPacman
+		endd, jumpi CalcularPosPacman	
+
+CalcularPosiInky, hex 0
+load OFFSET
+	add inkyColumn
+	Store PosInky
+	SumarFilasInky, load PosInky
+		Add DIECISEIS
+		Store PosInky
+		Load inkyRow
+		Subt ONE
+		Store inkyRow
+		SkipCond 400
+		jump SumarFilasInky
+		Load PosInky
+		Store PosInicialInky
+		jumpi CalcularPosiInky
+
+CalcularPosiBlinky, hex 0
+load OFFSET
+	add blinkyColumn
+	Store PosBlinky
+	SumarFilasBlinky, load PosBlinky
+		Add DIECISEIS
+		Store PosBlinky
+		Load blinkyRow
+		Subt ONE
+		Store blinkyRow
+		SkipCond 400
+		jump SumarFilasBlinky
+		Load PosBlinky
+		Store PosInicialBlinky
+		jumpi CalcularPosiBlinky
+
+CalcularPosiPinky, hex 0 
+	load OFFSET
+	add pinkyColumn
+	Store PosPinky
+	SumarFilasPinky, load PosPinky
+		Add DIECISEIS
+		Store PosPinky
+		Load pinkyRow
+		Subt ONE
+		Store pinkyRow
+		SkipCond 400
+		jump SumarFilasPinky
+		Load PosPinky
+		Store PosInicialPinky
+		jumpi CalcularPosiPinky
+ 
+CalcularPosiClyde, hex 0
+	load OFFSET
+	add clydeColumn
+	Store PosClyde
+	SumarFilasClyde, load PosClyde
+		Add DIECISEIS
+		Store PosClyde
+		Load clydeRow
+		Subt ONE
+		Store clydeRow
+		SkipCond 400
+		jump SumarFilasClyde
+		Load PosClyde
+		Store PosInicialClyde
+		jumpi CalcularPosiClyde
+
+iniciarPrograma, jns CalcularPosPacman
+	jns CalcularPosiInky
+	jns CalcularPosiPinky
+	jns CalcularPosiClyde
+	jns CalcularPosiBlinky
+
+
+LoopMovimientosDeTodos, Load VariableControlLoopMovimientosTodos
+	SkipCond 000
+	Jump seguirloop
+	Load FOUR
+	Store VariableControlLoopMovimientosTodos
+	seguirloop, Load VariableControlLoopMovimientosTodos
+	Subt FOUR
+	SkipCond 400 /si es 4 se mueve el pacman 
+	JnS LoopMovimientoFantasmas1
+	JnS LoopMovimientoPacman1
+	Load VariableControlLoopMovimientosTodos
+	SkipCond 400
+	Jump Volver
+	Load FOUR 
+	Store VariableControlLoopMovimientosTodos
+	Volver, Jump LoopMovimientosDeTodos
+	
+LoopMovimientoFantasmas1, hex 0
+LoopMovimientoFantasmas, Load VariableControlLoopMovimientoFantasmas
+	/3 blinky, 2 pinky, 1 inky, 0 clyde
+	SkipCond 400 /si se cumple es Clyde
+	Jump VerMovimientoFantasma1 
+	CargarInfoClyde, Load CLYDE_COLOR
+	Store ColorFantasmaActual
+	Load PosClyde
+	Store PosMovFantasma
+	Jump irAMoverFantasma
+	VerMovimientoFantasma1, Load VariableControlLoopMovimientoFantasmas
+	Subt ONE
+	SkipCond 400 /si se cumple es inky
+	Jump VerMovimientoFantasma2
+	CargarInfoInky, Load INKY_COLOR
+	Store ColorFantasmaActual
+	Load PosInky
+	Store PosMovFantasma
+	Jump irAMoverFantasma
+	VerMovimientoFantasma2, Load VariableControlLoopMovimientoFantasmas
+	Subt TWO
+	SkipCond 400 /si se cumple es pinky
+	Jump CargarInfoBlinky
+	CargarInfoPinky, load PINKY_COLOR
+	Store ColorFantasmaActual
+	load PosPinky
+	store PosMovFantasma
+	Jump irAMoverFantasma
+	CargarInfoBlinky, Load BLINKY_COLOR /cargar info blinky
+	store ColorFantasmaActual
+	Load PosBlinky
+	Store PosMovFantasma
+	irAMoverFantasma, Jump VerMovimientoFantasma
+
+ActualizarIndiceMov2, Load Start
+	store Index
+	Load CIEN
+	Store CopiaNum
+	Jump LoopMovimientoFantasmas
+
+VerMovimientoFantasma, LoadI Index /para ver que movimiento le toca hacer 
+	Subt ONE
+	SkipCond 400
+	Jump SeguirMovFantasma2
+	JnS MoverFantasmaDerecha
+	jump SeguirLoopFantasma
+	SeguirMovFantasma2, LoadI Index
+	Subt TWO
+	SkipCond 400
+	Jump SeguirMovFantasma3
+	JnS MoverFantasmaArriba
+	jump SeguirLoopFantasma
+	SeguirMovFantasma3, LoadI Index
+	Subt THREE
+	SkipCond 400
+	Jump SeguirMoverFantasma4
+	JnS MoverFantasmaIzquierda
+	Jump SeguirLoopFantasma
+	SeguirMoverFantasma4, JnS MoverFantasmaAbajo
+	SeguirLoopFantasma, Load CopiaNum
+	Subt ONE
+	Store CopiaNum
+	SkipCond 800
+	Jump ActualizarIndiceMov2
+	Load Index
+	Add ONE
+	Store Index
+	Load VariableControlLoopMovimientoFantasmas
+	Add ONE
+	skipcond 800
+	Jns ActualizarVariableControl
+	/Load VariableControlLoopMovimientoFantasmas
+	/subt ONE
+	/Store VariableControlLoopMovimientoFantasmas
+	TerminarVerMovimientoFantasma, Jump LoopMovimientosDeTodos
+
+ActualizarVariableControl, hex 000
+	Load THREE
+	store VariableControlLoopMovimientoFantasmas
+	JumpI ActualizarVariableControl
+
+verificarSiFantasmaVaACeldaConMoneda, hex 000
+	Load CERO
+	Store verificarSiFantasmaVaACeldaConMonedaReturn
+	LoadI CopiaPosFantasmaVerificarMov
+	Subt BOLITA_COLOR
+	SkipCond 400
+	Jump TerminarVerificacionFantasmaMoneda
+	Load ONE
+	Store verificarSiFantasmaVaACeldaConMonedaReturn
+	TerminarVerificacionFantasmaMoneda, JumpI verificarSiFantasmaVaACeldaConMoneda
+
+verificarSiFantasmaVaACeldaConEsteroide, hex 000
+	Load CERO
+	Store verificarSiFantasmaVaACeldaConEsteroideReturn
+	LoadI CopiaPosFantasmaVerificarMov
+	Subt ESTEROIDE_COLOR
+	SkipCond 400
+	Jump TerminarVerificacionFantasmaEsteroide
+	Load ONE
+	Store verificarSiFantasmaVaACeldaConEsteroideReturn
+	TerminarVerificacionFantasmaEsteroide, JumpI verificarSiFantasmaVaACeldaConEsteroide
+
+verificarSiFantasmaChocaAPacman, hex 0
+	Load ONE
+	store verificarSiFantasmaChocaAPacmanReturn
+	LoadI PosMovFantasma
+	Subt PAC-MAN_COLOR
+	SkipCond 400 / si se cumple significa que choca a pacman
+	Jump terminarDeVerificar 
+	Load pacmanTieneEsteroideBool
+	SkipCond 800 /si se cumple pacman tiene un esteroide y pacman puede comerlos 
+	Jump fantasmaComeAPacman
+	/caso en el que fantasma será comido por pacman
+	Load colorAnterior
+	Subt PINKY_COLOR
+	SkipCond 400
+	Jump seComioAInky
+	Load PosInicialPinky
+	Store PosPinky
+	Load PosPinky
+	Store PosMovFantasma
+	Jump mostrarScore
+	seComioAInky, Load colorAnterior
+	Subt INKY_COLOR
+	SkipCond 400
+	Jump seComioABlinky
+	Load PosInicialInky
+	Store PosInky
+	Load PosInky
+	Store PosMovFantasma
+	Jump mostrarScore
+	seComioABlinky, Load colorAnterior
+	Subt BLINKY_COLOR
+	SkipCond 400
+	Jump seComioAClyde
+	Load PosInicialBlinky
+	Store PosBlinky
+	Load PosBlinky
+	Store PosMovFantasma
+	Jump mostrarScore
+	seComioAClyde, Load PosInicialClyde
+	Store PosClyde
+	Load PosClyde
+	Store PosMovFantasma
+	mostrarScore, Load SCORE
+	Add TEN
+	Store SCORE
+	JnS imprimirScore
+	Jump terminarDeVerificar
+	fantasmaComeAPacman, Load PosInicialPacman
+	Store PosPacman
+	Load PAC-MAN_COLOR
+	StoreI PosPacman
+	Load Negro
+	StoreI CopiaPosFantasmaVerificarMov
+		load pac-manColumnOriginal
+		store pac-manColumn
+		load pac-manRowOriginal
+		store pac-manRow
+	Load Lives
+	Subt ONE
+	Store Lives
+	Load Lives
+	SkipCond 800
+	Jump End
+	Load CERO
+	Store verificarSiFantasmaChocaAPacmanReturn
+	terminarDeVerificar, JumpI verificarSiFantasmaChocaAPacman
+	
+	MoverFantasmaDerecha, hex 000
+	Load PosMovFantasma
+	Add ONE
+	Store CopiaPosFantasmaVerificarMov
+	JnS verificarChoqueFantasmaPared
+	Load VerificarChoqueFantasmaReturn
+	SkipCond 400
+	Jump ultimoFantasmaDerecha
+	LoadI PosMovFantasma
+	Subt BOLITA_COLOR
+	SkipCond 400
+	Jump pintardeNegro
+	Jump moverleAlFantasmaDerecha
+	pintardeNegro, Load Negro
+	StoreI PosMovFantasma
+	Load ColorFantasmaActual
+	Store colorAnterior
+	moverleAlFantasmaDerecha, Load PosMovFantasma
+	Add ONE
+	Store PosMovFantasma
+	JnS verificarSiFantasmaVaACeldaConMoneda
+	Load verificarSiFantasmaVaACeldaConMonedaReturn
+	SkipCond 400
+	Jump siguiente
+	JnS verificarSiFantasmaVaACeldaConEsteroide
+	Load verificarSiFantasmaVaACeldaConEsteroideReturn
+	SkipCond 400
+	Jump siguiente
+	JnS verificarSiFantasmaChocaAPacman
+	Load verificarSiFantasmaChocaAPacmanReturn
+	skipcond 800
+	JnS imprimirScore
+	Load ColorFantasmaActual
+	StoreI PosMovFantasma
+	siguiente, Load VariableControlLoopMovimientosTodos
+	Subt ONE
+	Store VariableControlLoopMovimientosTodos
+	Load VariableControlLoopMovimientoFantasmas
+	subt ONE
+	Store VariableControlLoopMovimientoFantasmas
+	/actualizar la posicion del fantasma en su variable original
+	Load VariableControlLoopMovimientoFantasmas
+	Add ONE
+	SkipCond 400 /si es clyde
+	Jump guardarPosInky
+	Load PosMovFantasma
+	Store PosClyde
+	Jump ultimoFantasmaDerecha
+	guardarPosInky, Load VariableControlLoopMovimientoFantasmas
+	SkipCond 400
+	Jump guardarPosPinky
+	Load PosMovFantasma
+	Store PosInky
+	Jump ultimoFantasmaDerecha
+	guardarPosPinky, Load VariableControlLoopMovimientoFantasmas
+	subt ONE
+	SkipCond 400
+	Jump guardarPosBlinky
+	Load PosMovFantasma
+	Store PosPinky
+	Jump ultimoFantasmaDerecha
+	guardarPosBlinky, Load PosMovFantasma
+	Store PosBlinky
+	ultimoFantasmaDerecha, JumpI MoverFantasmaDerecha
+
+
+MoverFantasmaArriba, hex 000
+	Load PosMovFantasma
+	SUBT DIECISEIS
+	Store CopiaPosFantasmaVerificarMov
+	JnS verificarChoqueFantasmaPared
+	Load VerificarChoqueFantasmaReturn
+	SkipCond 400
+	Jump ultimoFantasmaArriba
+	LoadI PosMovFantasma
+	Subt BOLITA_COLOR 
+	SkipCond 400
+	Jump pintardeNegroArriba
+	Jump moverleAlFantasmaArriba
+	pintardeNegroArriba, Load Negro
+	StoreI PosMovFantasma
+	Load ColorFantasmaActual
+	Store colorAnterior
+	moverleAlFantasmaArriba, Load PosMovFantasma
+	Subt DIECISEIS
+	Store PosMovFantasma
+	JnS verificarSiFantasmaVaACeldaConMoneda
+	Load verificarSiFantasmaVaACeldaConMonedaReturn
+	SkipCond 400
+	Jump siguienteArriba
+	JnS verificarSiFantasmaVaACeldaConEsteroide
+	Load verificarSiFantasmaVaACeldaConEsteroideReturn
+	SkipCond 400
+	Jump siguienteArriba
+	JnS verificarSiFantasmaChocaAPacman
+	Load verificarSiFantasmaChocaAPacmanReturn
+	skipcond 800
+	JnS imprimirScore
+	Load ColorFantasmaActual
+	StoreI PosMovFantasma
+	siguienteArriba, Load VariableControlLoopMovimientosTodos
+	Subt ONE
+	Store VariableControlLoopMovimientosTodos
+	Load VariableControlLoopMovimientoFantasmas
+	subt ONE
+	Store VariableControlLoopMovimientoFantasmas
+	/actualizar la posicion del fantasma en su variable original
+	Load VariableControlLoopMovimientoFantasmas
+	Add ONE
+	SkipCond 400 /si es clyde
+	Jump guardarPosInkyArriba
+	Load PosMovFantasma
+	Store PosClyde
+	Jump ultimoFantasmaArriba
+	guardarPosInkyArriba, Load VariableControlLoopMovimientoFantasmas
+	SkipCond 400
+	Jump guardarPosPinkyArriba
+	Load PosMovFantasma
+	Store PosInky
+	Jump ultimoFantasmaArriba
+	guardarPosPinkyArriba, Load VariableControlLoopMovimientoFantasmas
+	subt ONE
+	SkipCond 400
+	Jump guardarPosBlinkyArriba
+	Load PosMovFantasma
+	Store PosPinky
+	Jump ultimoFantasmaArriba
+	guardarPosBlinkyArriba, Load PosMovFantasma
+	Store PosBlinky
+	ultimoFantasmaArriba, JumpI MoverFantasmaArriba
+
+MoverFantasmaIzquierda, hex 000
+	Load PosMovFantasma
+	Subt ONE
+	Store CopiaPosFantasmaVerificarMov
+	JnS verificarChoqueFantasmaPared
+	Load VerificarChoqueFantasmaReturn
+	SkipCond 400
+	Jump ultimoFantasmaIzquierda
+	LoadI PosMovFantasma
+	Subt BOLITA_COLOR
+	SkipCond 400
+	Jump pintardeNegroIzquierda
+	Jump moverleAlFantasmaIzquierda
+	pintardeNegroIzquierda, Load Negro
+	StoreI PosMovFantasma
+	Load ColorFantasmaActual
+	Store colorAnterior
+	moverleAlFantasmaIzquierda, Load PosMovFantasma
+	Subt ONE
+	Store PosMovFantasma
+	JnS verificarSiFantasmaVaACeldaConMoneda
+	Load verificarSiFantasmaVaACeldaConMonedaReturn
+	SkipCond 400
+	Jump siguienteIzquierda
+	JnS verificarSiFantasmaVaACeldaConEsteroide
+	Load verificarSiFantasmaVaACeldaConEsteroideReturn
+	SkipCond 400
+	Jump siguienteIzquierda
+	JnS verificarSiFantasmaChocaAPacman
+	Load verificarSiFantasmaChocaAPacmanReturn
+	skipcond 800
+	JnS imprimirScore
+	Load ColorFantasmaActual
+	StoreI PosMovFantasma
+	siguienteIzquierda, Load VariableControlLoopMovimientosTodos
+	Subt ONE
+	Store VariableControlLoopMovimientosTodos
+	Load VariableControlLoopMovimientoFantasmas
+	subt ONE
+	Store VariableControlLoopMovimientoFantasmas
+	/actualizar la posicion del fantasma en su variable original
+	Load VariableControlLoopMovimientoFantasmas
+	Add ONE
+	SkipCond 400 /si es clyde
+	Jump guardarPosInkyIzquierda
+	Load PosMovFantasma
+	Store PosClyde
+	Jump ultimoFantasmaIzquierda
+	guardarPosInkyIzquierda, Load VariableControlLoopMovimientoFantasmas
+	SkipCond 400
+	Jump guardarPosPinkyIzquierda
+	Load PosMovFantasma
+	Store PosInky
+	Jump ultimoFantasmaIzquierda
+	guardarPosPinkyIzquierda, Load VariableControlLoopMovimientoFantasmas
+	subt ONE
+	SkipCond 400
+	Jump guardarPosBlinkyIzquierda
+	Load PosMovFantasma
+	Store PosPinky
+	Jump ultimoFantasmaIzquierda
+	guardarPosBlinkyIzquierda, Load PosMovFantasma
+	Store PosBlinky
+	ultimoFantasmaIzquierda, JumpI MoverFantasmaIzquierda
+
+MoverFantasmaAbajo, hex 000
+	Load PosMovFantasma
+	ADD DIECISEIS
+	Store CopiaPosFantasmaVerificarMov
+	JnS verificarChoqueFantasmaPared
+	Load VerificarChoqueFantasmaReturn
+	SkipCond 400
+	Jump ultimoFantasmaAbajo
+	LoadI PosMovFantasma
+	Subt BOLITA_COLOR
+	SkipCond 400
+	Jump pintardeNegroAbajo
+	Jump moverleAlFantasmaAbajo
+	pintardeNegroAbajo, Load Negro
+	StoreI PosMovFantasma
+	Load ColorFantasmaActual
+	Store colorAnterior
+	moverleAlFantasmaAbajo, Load PosMovFantasma
+	add DIECISEIS
+	Store PosMovFantasma
+	JnS verificarSiFantasmaVaACeldaConMoneda
+	Load verificarSiFantasmaVaACeldaConMonedaReturn
+	SkipCond 400
+	Jump siguienteAbajo
+	JnS verificarSiFantasmaVaACeldaConEsteroide
+	Load verificarSiFantasmaVaACeldaConEsteroideReturn
+	SkipCond 400
+	Jump siguienteAbajo
+	JnS verificarSiFantasmaChocaAPacman
+	Load verificarSiFantasmaChocaAPacmanReturn
+	skipcond 800
+	JnS imprimirScore
+	Load ColorFantasmaActual
+	StoreI PosMovFantasma
+	siguienteAbajo, Load VariableControlLoopMovimientosTodos
+	Subt ONE
+	Store VariableControlLoopMovimientosTodos
+	Load VariableControlLoopMovimientoFantasmas
+	subt ONE
+	Store VariableControlLoopMovimientoFantasmas
+	/actualizar la posicion del fantasma en su variable original
+	Load VariableControlLoopMovimientoFantasmas
+	Add ONE
+	SkipCond 400 /si es clyde
+	Jump guardarPosInkyAbajo
+	Load PosMovFantasma
+	Store PosClyde
+	Jump ultimoFantasmaAbajo
+	guardarPosInkyAbajo, Load VariableControlLoopMovimientoFantasmas
+	SkipCond 400
+	Jump guardarPosPinkyAbajo
+	Load PosMovFantasma
+	Store PosInky
+	Jump ultimoFantasmaAbajo
+	guardarPosPinkyAbajo, Load VariableControlLoopMovimientoFantasmas
+	subt ONE
+	SkipCond 400
+	Jump guardarPosBlinkyAbajo
+	Load PosMovFantasma
+	Store PosPinky
+	Jump ultimoFantasmaAbajo
+	guardarPosBlinkyAbajo, Load PosMovFantasma
+	Store PosBlinky
+	ultimoFantasmaAbajo, JumpI MoverFantasmaAbajo
+
+verificarChoqueFantasmaPared, hex 000
+	Load CERO
+	Store VerificarChoqueFantasmaReturn
+	LoadI CopiaPosFantasmaVerificarMov
+	Subt PARED_COLOR
+	SkipCond 400
+	Jump ContinuarFantasma
+	Load ONE
+	Store VerificarChoqueFantasmaReturn
+	ContinuarFantasma, JumpI verificarChoqueFantasmaPared
+
+LoopMovimientoPacman1, hex 0
+	LoopMovimiento, Load BoolImprimirScore
+	SkipCond 400
+	JnS imprimirScore
+	LOADI Index
+	Subt ONE
+	SkipCond 400
+	Jump Seguir2
+	JnS MoverPacmanDerecha
+	Seguir2, LoadI Index
+		subt TWO
+		SkipCond 400
+		Jump Seguir3
+		JnS MoverPacmanArriba
+	Seguir3, LoadI Index
+		Subt THREE
+		SkipCond 400
+		Jump Seguir4
+		JnS MoverPacmanIzquierda
+	Seguir4, LoadI Index
+		Subt FOUR
+		SkipCond 400
+		Jump Seguir
+		JnS MoverPacmanAbajo
+	Seguir, Load CopiaNum
+		Subt ONE
+		Store CopiaNum
+		SkipCond 800
+		Jump ActualizarIndiceMov
+		Load Index
+		Add ONE
+		Store Index
+		JumpI LoopMovimientoPacman1
+
+
+imprimirScore, hex 000
+	Load CERO
+	Store BoolImprimirScore
+	Load SCORE
+	Output
+	Load Lives 
+	Output
+	JumpI imprimirScore
+
+ActualizarIndiceMov, Load Start
+	store Index
+	Load CIEN
+	Store CopiaNum
+	Jump LoopMovimiento
+
+verificarChoquePared, hex 000
+	load CERO
+	Store VerificarChoqueReturn
+	LoadI CopiaPosPacmanVerificarMov
+	Subt PARED_COLOR
+	skipcond 400
+	Jump Continuar
+	Load ONE
+	store VerificarChoqueReturn
+	Continuar, JumpI verificarChoquePared
+
+verificarChoquedePacmanAFantasma, hex 000
+	Load CERO
+	Store VerificarChoquedePacmanAFantasmaReturn
+	LoadI CopiaPosPacmanVerificarMov
+	Subt INKY_COLOR
+	SkipCond 400
+	Jump verificarChoquePinky
+	Jump seChocoConFantasma
+	verificarChoquePinky, LoadI CopiaPosPacmanVerificarMov
+		Subt PINKY_COLOR
+		SkipCond 400
+		Jump verificarChoqueABlinky
+		Jump seChocoConFantasma
+	verificarChoqueABlinky, LoadI CopiaPosPacmanVerificarMov
+		Subt BLINKY_COLOR
+		SkipCond 400
+		Jump verificarChoqueAClyde
+		Jump seChocoConFantasma
+	verificarChoqueAClyde, LoadI CopiaPosPacmanVerificarMov
+		Subt CLYDE_COLOR
+		SkipCond 400
+		Jump terminarVerificacionChoqueAFantasma
+		Load ONE
+		Store VerificarChoqueFantasmaReturn
+	seChocoConFantasma, Load pacmanTieneEsteroideBool
+		SkipCond 800
+		Jump regresarAPacmanAPosInicial /si no significa que pacman comio un fantasma teniendo esteroide
+		LoadI CopiaPosPacmanVerificarMov
+		Subt CLYDE_COLOR
+		SkipCond 400
+		Jump versichochaapinky
+		Load Negro
+		StoreI PosClyde
+		Load PosInicialClyde
+		Store PosClyde
+		Load CLYDE_COLOR
+		StoreI PosClyde
+	versichochaapinky, LoadI CopiaPosPacmanVerificarMov
+		Subt PINKY_COLOR
+		skipcond 400
+		Jump versichochaainky
+		Load Negro
+		StoreI PosPinky
+		Load PosInicialPinky
+		Store PosPinky
+		Load PINKY_COLOR
+		StoreI PosPinky
+	versichochaainky, LoadI CopiaPosPacmanVerificarMov
+		Subt INKY_COLOR
+		skipcond 400
+		Jump versichocaablinky
+		Load Negro
+		StoreI PosInky
+		Load PosInicialInky
+		Store PosInky
+		load INKY_COLOR
+		StoreI PosInky
+	versichocaablinky, LoadI CopiaPosPacmanVerificarMov
+		Subt BLINKY_COLOR
+		SkipCond 400
+		Jump finish
+		Load Negro
+		StoreI PosBlinky
+		Load PosInicialBlinky
+		Store PosBlinky
+		Load BLINKY_COLOR
+		StoreI PosBlinky
+		finish, Load Negro
+		StoreI PosPacman
+		Load SCORE
+		Add TEN
+		Store SCORE
+		JnS imprimirScore
+		Jump terminarVerificacionChoqueAFantasma
+	regresarAPacmanAPosInicial, Load ONE
+		Store VerificarChoquedePacmanAFantasmaReturn
+		Load Negro
+		StoreI PosPacman
+		Load PosInicialPacman
+		Store PosPacman
+		load pac-manColumnOriginal
+		store pac-manColumn
+		load pac-manRowOriginal
+		store pac-manRow
+		Load Lives
+		Subt ONE
+		SkipCond 000
+		Jump actualizarVida
+		Jump End
+	actualizarVida, Load Lives
+		Subt ONE
+		Store Lives
+		JnS imprimirScore
+		terminarVerificacionChoqueAFantasma, JumpI verificarChoquedePacmanAFantasma
+
+verificarMoneda, hex 000
+	LoadI PosPacman
+	Subt BOLITA_COLOR
+	SkipCond 400
+	Jump Regresar
+	Load SCORE
+	Add ONE
+	Store SCORE
+	Load ONE
+	Store BoolImprimirScore
+	Load Monedas
+	Subt ONE
+	Store Monedas
+	Load Monedas 
+	Subt ONE
+	SkipCond 800
+	Jump End
+	Regresar, JumpI verificarMoneda
+
+verificarSiComeEsteroide, hex 0
+	LoadI CopiaPosPacmanVerificarMov
+	Subt ESTEROIDE_COLOR
+	SkipCond 400
+	Jump terminarVerificacionEsteroide
+	Load ONE
+	Store pacmanTieneEsteroideBool
+	JnS imprimirScore
+terminarVerificacionEsteroide, JumpI verificarSiComeEsteroide
+
+MoverPacmanDerecha, hex 000
+	load pac-manColumn
+	store pac-manColumnAux
+	subt QUINCE
+	skipcond 400
+	jump noEspejo
+	siEspejo, load CERO
+		store pac-manColumn
+		load PosPacman
+		store posPacmanAux /se guarda copia de la original.
+		JNS CalcularPosPacman
+		store CopiaPosPacmanVerificarMov
+		jump espejo
+	noEspejo, Load PosPacman /sigue siendo la actual.
+		Add ONE
+		store CopiaPosPacmanVerificarMov
+	espejo, JnS verificarChoquePared
+		Load VerificarChoqueReturn
+		SkipCond 400
+		Jump ultimoDerecha
+		JnS verificarSiComeEsteroide
+		JnS verificarChoquedePacmanAFantasma /verifica posición, no pinta.
+		Load VerificarChoquedePacmanAFantasmaReturn
+		SkipCond 800
+		Jump ContinueNormal
+		Load PAC-MAN_COLOR
+		StoreI PosPacman
+		Jump follow
+	ContinueNormal, load pac-manColumnAux
+		store pac-manColumn
+		load pac-manColumn
+		subt QUINCE
+		skipcond 400
+		jump noCumpleEspejo
+		jump nuPosEspejo
+		noCumpleEspejo, Load Negro
+			storeI PosPacman
+			Load PosPacman
+			ADD ONE
+			Store PosPacman
+				load pac-manColumn
+				add ONE
+				store pac-manColumn
+				jump verMon
+		nuPosEspejo, load posPacmanAux
+			store PosPacman 
+			load Negro
+			storeI PosPacman
+			load PosPacman
+			subt QUINCE
+			store PosPacman
+				load pac-manColumn
+				subt QUINCE
+				store pac-manColumn
+			verMon, JnS verificarMoneda
+			Load PAC-MAN_COLOR
+			StoreI PosPacman /la pos que debe ser pintada
+	follow, Load VariableControlLoopMovimientosTodos
+		Subt ONE
+		Store VariableControlLoopMovimientosTodos
+		Load pacmanTieneEsteroideBool
+		SkipCond 800
+		Jump ultimoDerecha
+		Load CopiaPasosEsteroides
+		Subt ONE
+		Store CopiaPasosEsteroides
+		JnS imprimirScore
+		Load CopiaPasosEsteroides
+		Output
+		Load CopiaPasosEsteroides
+		SkipCond 400
+		Jump ultimoDerecha
+		Load PasosEsteroides /número que cambia. pasos que el pac-man debe dar
+		Store CopiaPasosEsteroides
+		Load CERO
+		Store pacmanTieneEsteroideBool
+ultimoDerecha, JumpI MoverPacmanDerecha
+
+MoverPacmanArriba, hex 000
+	/si estoy en la fila 0, puedo hacer espejo para arriba
+	load pac-manRow
+	store pac-manRowAux
+	skipcond 400
+	jump noEspejo3
+	siEspejo3, load QUINCE
+		store pac-manRow
+		load PosPacman
+		store posPacmanAux /se guarda copia de la original.
+		JNS CalcularPosPacman
+		store CopiaPosPacmanVerificarMov
+		jump espejo3
+	noEspejo3, Load PosPacman /sigue siendo la actual.
+		subt DIECISEIS
+		store CopiaPosPacmanVerificarMov
+	espejo3, JnS verificarChoquePared
+		Load VerificarChoqueReturn
+		SkipCond 400
+		Jump ultimoArriba
+		JnS verificarSiComeEsteroide
+		JnS verificarChoquedePacmanAFantasma /verifica posición, no pinta.
+		Load VerificarChoquedePacmanAFantasmaReturn
+		SkipCond 800
+		Jump ContinueNormal3
+		Load PAC-MAN_COLOR
+		StoreI PosPacman
+		Jump follow3
+	ContinueNormal3, load pac-manRowAux
+		store pac-manRow
+		load pac-manRow
+		skipcond 400
+		jump noCumpleEspejo3
+		jump nuPosEspejo3
+		noCumpleEspejo3, Load Negro
+			storeI PosPacman
+			Load PosPacman
+			subt DIECISEIS
+			Store PosPacman
+				load pac-manRow /IMPORTANTE
+				subt ONE
+				store pac-manRow
+				jump verMon3
+		nuPosEspejo3, load posPacmanAux
+			store PosPacman 
+			load Negro
+			storeI PosPacman
+			load PosPacman
+			add DOSC-CUARENTA
+			store PosPacman
+				load pac-manRow/IMP0RTANTE
+				add QUINCE
+				store pac-manRow
+		verMon3, JnS verificarMoneda
+			Load PAC-MAN_COLOR
+			StoreI PosPacman /la pos que debe ser pintada
+	follow3, Load VariableControlLoopMovimientosTodos
+		Subt ONE
+		Store VariableControlLoopMovimientosTodos
+		Load pacmanTieneEsteroideBool
+		SkipCond 800
+		Jump ultimoArriba
+		Load CopiaPasosEsteroides
+		Subt ONE
+		Store CopiaPasosEsteroides
+		JnS imprimirScore
+		Load CopiaPasosEsteroides
+		Output
+		Load CopiaPasosEsteroides
+		SkipCond 400
+		Jump ultimoArriba
+		Load PasosEsteroides /número que cambia. pasos que el pac-man debe dar
+		Store CopiaPasosEsteroides
+		Load CERO
+		Store pacmanTieneEsteroideBool
+ultimoArriba, JumpI MoverPacmanArriba
+
+MoverPacmanAbajo, hex 000
+	/si estoy en la fila 0, puedo hacer espejo para arriba
+	load pac-manRow
+	store pac-manRowAux
+	subt QUINCE
+	skipcond 400
+	jump noEspejo4
+	siEspejo4, load CERO
+		store pac-manRow
+		load PosPacman
+		store posPacmanAux /se guarda copia de la original.
+		JNS CalcularPosPacman
+		store CopiaPosPacmanVerificarMov
+		jump espejo4
+	noEspejo4, Load PosPacman /sigue siendo la actual.
+		add DIECISEIS
+		store CopiaPosPacmanVerificarMov
+	espejo4, JnS verificarChoquePared
+		Load VerificarChoqueReturn
+		SkipCond 400
+		Jump ultimoAbajo
+		JnS verificarSiComeEsteroide
+		JnS verificarChoquedePacmanAFantasma /verifica posición, no pinta.
+		Load VerificarChoquedePacmanAFantasmaReturn
+		SkipCond 800
+		Jump ContinueNormal4
+		Load PAC-MAN_COLOR
+		StoreI PosPacman
+		Jump follow4
+	ContinueNormal4, load pac-manRowAux
+		store pac-manRow
+		load pac-manRow
+		subt QUINCE /here ojo
+		skipcond 400
+		jump noCumpleEspejo4
+		jump nuPosEspejo4
+		noCumpleEspejo4, Load Negro
+			storeI PosPacman
+			Load PosPacman
+			add DIECISEIS
+			Store PosPacman
+				load pac-manRow /IMPORTANTE
+				add ONE
+				store pac-manRow
+				jump verMon4
+		nuPosEspejo4, load posPacmanAux
+			store PosPacman 
+			load Negro
+			storeI PosPacman
+			load PosPacman
+			subt DOSC-CUARENTA
+			store PosPacman
+				load pac-manRow/IMP0RTANTE
+				subt QUINCE
+				store pac-manRow
+		verMon4, JnS verificarMoneda
+			Load PAC-MAN_COLOR
+			StoreI PosPacman /la pos que debe ser pintada
+	follow4, Load VariableControlLoopMovimientosTodos
+		Subt ONE
+		Store VariableControlLoopMovimientosTodos
+		Load pacmanTieneEsteroideBool
+		SkipCond 800
+		Jump ultimoAbajo
+		Load CopiaPasosEsteroides
+		Subt ONE
+		Store CopiaPasosEsteroides
+		JnS imprimirScore
+		Load CopiaPasosEsteroides
+		Output
+		Load CopiaPasosEsteroides
+		SkipCond 400
+		Jump ultimoAbajo
+		Load PasosEsteroides /número que cambia. pasos que el pac-man debe dar
+		Store CopiaPasosEsteroides
+		Load CERO
+		Store pacmanTieneEsteroideBool
+ultimoAbajo, JumpI MoverPacmanAbajo
+
+MoverPacmanIzquierda, hex 000
+	load pac-manColumn
+	store pac-manColumnAux
+	skipcond 400
+	jump noEspejo2
+	siEspejo2, load QUINCE
+		store pac-manColumn
+		load PosPacman
+		store posPacmanAux /se guarda copia de la original.
+		JNS CalcularPosPacman
+		store CopiaPosPacmanVerificarMov
+		jump espejo2
+	noEspejo2, Load PosPacman /sigue siendo la actual.
+		subt ONE
+		store CopiaPosPacmanVerificarMov
+	espejo2, JnS verificarChoquePared
+		Load VerificarChoqueReturn
+		SkipCond 400
+		Jump ultimoIzquierda
+		JnS verificarSiComeEsteroide
+		JnS verificarChoquedePacmanAFantasma /verifica posición, no pinta.
+		Load VerificarChoquedePacmanAFantasmaReturn
+		SkipCond 800
+		Jump ContinueNormal2
+		Load PAC-MAN_COLOR
+		StoreI PosPacman
+		Jump follow2
+	ContinueNormal2, load pac-manColumnAux
+		store pac-manColumn
+		load pac-manColumn
+		skipcond 400
+		jump noCumpleEspejo2
+		jump nuPosEspejo2
+		noCumpleEspejo2, Load Negro
+			storeI PosPacman
+			Load PosPacman
+			subt ONE
+			Store PosPacman
+				load pac-manColumn /IMPORTANTE
+				subt ONE
+				store pac-manColumn
+				jump verMon2
+		nuPosEspejo2, load posPacmanAux
+			store PosPacman 
+			load Negro
+			storeI PosPacman
+			load PosPacman
+			add QUINCE
+			store PosPacman
+				load pac-manColumn /IMP0RTANTE
+				add QUINCE
+				store pac-manColumn
+		verMon2, JnS verificarMoneda
+			Load PAC-MAN_COLOR
+			StoreI PosPacman /la pos que debe ser pintada
+	follow2, Load VariableControlLoopMovimientosTodos
+		Subt ONE
+		Store VariableControlLoopMovimientosTodos
+		Load pacmanTieneEsteroideBool
+		SkipCond 800
+		Jump ultimoIzquierda
+		Load CopiaPasosEsteroides
+		Subt ONE
+		Store CopiaPasosEsteroides
+		JnS imprimirScore
+		Load CopiaPasosEsteroides
+		Output
+		Load CopiaPasosEsteroides
+		SkipCond 400
+		Jump ultimoIzquierda
+		Load PasosEsteroides /número que cambia. pasos que el pac-man debe dar
+		Store CopiaPasosEsteroides
+		Load CERO
+		Store pacmanTieneEsteroideBool
+ultimoIzquierda, JumpI MoverPacmanIzquierda
+
+End, HALT
+
+
+
+//nuestras variables 
+
+PosBlinky, hex 00
+PosInicialBlinky, hex 0
+
+PosPinky, hex 00
+PosInicialPinky, hex 0
+
+PosInky, hex 00
+PosInicialInky, hex 0
+
+PosClyde, hex 00
+PosInicialClyde, hex 0
+
+POSInicial, Hex FE7
+SiguientePacman, Hex FE8
+PosPacman, HEX 0
+PosInicialPacman, hex 0
+CopiaPosPacmanVerificarMov, hex 0
+VerificarChoqueReturn, hex 0 /0 es que se choca contra una pared
+VerificarChoqueFantasmaReturn, hex 0
+
+Negro, HEX 000
+addNext, Hex 0
+DIECISEIS, DEC 16
+TWO, DEC 2
+THREE, DEC 3
+FOUR, DEC 4
+FIVE, dec 5
+CIEN, DEC 100
+CERO, DEC 0
+TEN, dec 10
+ONCE, DEC 11
+QUINCE, DEC 15
+SCORE, DEC 0
+SIETEUNO, hex 71
+DOSC-CUARENTA, dec 240
+BoolImprimirScore, dec 1 /1 es que si debe imprimirse el score 
+Lives, dec 3
+VariableControlLoopMovimientoFantasmas, dec 3 /porque hay 4 fantasmas
+PosMovFantasma, hex 3 /posicion actual del fantasma que se va a mover
+ColorFantasmaActual, hex 0 /el color del fantasma que se va a mover
+CopiaPosFantasmaVerificarMov, hex 0
+VariableControlLoopMovimientosTodos, hex 4
+VerificarChoquedePacmanAFantasmaReturn, hex 0 /0 es que el pacman se choca contra el fantasma
+verificarSiFantasmaVaACeldaConMonedaReturn, hex 0 /1 es que hay una moneda
+verificarSiFantasmaChocaAPacmanReturn, hex 0 /0 es que si se choco
+verificarSiFantasmaVaACeldaConEsteroideReturn, hex 0 /1 es que hay un esteroide
+
+Monedas, DEC 11
+PasosEsteroides, DEC 6
+CopiaPasosEsteroides, dec 6 
+pacmanTieneEsteroideBool, hex 0 /0 es que no tiene esteroide
+colorAnterior, hex 0
+
+/variables espejo
+pac-manRowOriginal, hex 0
+pac-manColumnOriginal, hex 0 
+contFilas, hex 0
+contPacman, hex 0
+contBlinky, hex 0
+contPinky, hex 0
+contInky, hex 0
+contClyde, hex 0
+pac-manColumnAux, hex 0
+pac-manRowAux, hex 0
+posPacmanAux, hex 0
